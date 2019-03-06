@@ -1,0 +1,40 @@
+arcpy.env.workspace = r' gdbfilepath '
+
+points = points file path
+related_table = table file path
+
+points_fields = ['GUID','LOC_ID']                 #This GUID relates to the table based on the Related_GUID
+related_table_fields = ['Related_GUID','Company'] #A unique Related_GUID can have several Company values associated with it
+
+#creates empty dictionary, can be named whatever
+dict = {}     
+
+#fills dictionary
+with arcpy.da.SearchCursor(points, points_fields) as cursor:
+    for row in cursor:
+        k = row[0]              #Related_GUID, this will be used as a key for the dictionary
+        v = row[1]              #Company, this will be used as a value for the dictionary
+        if not a in dict:
+            dict[k] = []        #If the Related_GUID is not in the dictionary, this adds the Related_GUID as a key
+            dict[k] = [v]       #The GUID is the key, the Company is the value associated with that key
+        else:
+            dict[k].append(v)   #If the Related_GUID exists in the dictionary, this adds that Related_GUID's Company to the existing values
+del cursor           #deletes cursor after SearchCursor is done
+
+#If only one value is associated with the Related_GUID, the dictionary format will be dict[Related_GUID] = [Company]
+#If multiple values are associated with the Related_GUID, the dictionary format will be dict[Related_GUID] = [Company1, Company2, etc]
+
+print "Dictionary complete"
+
+
+with arcpy.da.UpdateCursor(points, points_fields) as cursor:
+    for row in cursor:
+        if row[0] in dict:                  #This checks to see if this points GUID is a key in the dictionary
+            if 'Company A' in dict[row[0]]:   
+                row[1] = "Yes"             #If 'Company A' is in the list of values associated with this GUID, then that LOC_ID is "Yes"   
+            elif 'Company B' in dict[row[0]]:
+                row[1] = "No"              #If 'Company A' is in the list of values associated with this GUID, then that LOC_ID is "No"   
+            else:
+                row[1] = "Who knows"       #If neither conditions are met, then that LOC_ID is "Who knows"   
+        cursor.updateRow(row)
+del cursor          #deletes cursor after UpdateCursor is done
