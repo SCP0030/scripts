@@ -13,7 +13,7 @@ related_table_fields = ['Related_GUID','Company'] #A unique Related_GUID can hav
 dict = {}     
 
 #fills dictionary
-with arcpy.da.SearchCursor(points, points_fields) as cursor:
+with arcpy.da.SearchCursor(related_table, related_table_fields) as cursor:
     for row in cursor:
         k = row[0]              #Related_GUID, this will be used as a key for the dictionary
         v = row[1]              #Company, this will be used as a value for the dictionary
