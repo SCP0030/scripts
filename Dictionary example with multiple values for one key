@@ -1,3 +1,4 @@
+import arcpy
 
 database = r' gdbfilepath '
 
@@ -30,7 +31,7 @@ del cursor           #deletes cursor after SearchCursor is done
 print "Dictionary complete"
 
 
-#An edit session may need to be started  in order to use an UpdateCursor
+#An edit session may need to be started in order to use an UpdateCursor
 edit = arcpy.da.Editor(database)            #database refers to the filepath defined at the beginning
 edit.startEditing(True/False, True/False)   #set True or False to parameters, check Esri documentation
 edit.startOperation()
