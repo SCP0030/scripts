@@ -8,7 +8,7 @@ for r, d, f in os.walk(file_path):
             #print(file)
             newfile =''
             for char in file:
-                if char.isalpha() or char == ".":
+                if char.isalpha() or char == "." or char == "_":
                     pass
                 else:
                     newfile += char
