@@ -1,0 +1,19 @@
+import os
+file_ext = ".pdf" #change this to whatever file extension you have
+file_path = r'full folder path' #change this to whatever your folder is, like r'C:\users\name\Documents\folder'
+
+for r, d, f in os.walk(file_path):
+    for file in f:
+        if file.endswith(file_ext):
+            #print(file)
+            newfile =''
+            for char in file:
+                if char.isalpha() or char == ".":
+                    pass
+                else:
+                    newfile += char
+            newfile += file_ext
+            #print(newfile)
+            full_file = os.path.join(r, file)
+            newfull_file = os.path.join(r, newfile)
+            os.rename(full_file, newfull_file)
